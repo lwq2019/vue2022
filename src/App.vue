@@ -3,7 +3,7 @@
     <RouterLink :to="{name:'signCommon',query:{type:'signup',title:'登录'}}">手机号/邮箱登录</RouterLink>
     <RouterLink to="/pictureSearch">生成图像</RouterLink>
     <RouterLink to="/interlocution">问答</RouterLink>
-    <div id="app" style="margin-top:10px">
+    <div id="app" style="margin-top:10px" class="container-login100">
       <RouterView></RouterView>
     </div>
   </layout>
@@ -19,7 +19,7 @@ export default {
     RouterView
   },
   mounted:function(){
-    this.$router.push({name:"signCommon",query:{type:'signup',title:'登录'}})
+    this.$router.push({name:"pictureSearch",query:{type:'signup',title:'登录'}})
   }
 }
 </script>

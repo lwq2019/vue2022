@@ -23,7 +23,7 @@
 </template>
   
   <script>
-    import {reactive,ref} from 'vue';
+    import {reactive,ref,inject} from 'vue';
     const validTelephone=(rule,value,callback)=>{
         if(!value){
             return callback(new Error('手机号/邮箱不能为空！'))
@@ -31,7 +31,7 @@
 				// /(^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$)|(^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$)/;
         const phoneReg=/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/
 				const emailReg=/^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+.([A-Za-z]{2,4})$/;
-        if(phoneReg.test(value) && emailReg.test(value)){
+        if(!(phoneReg.test(value) && emailReg.test(value))){
             callback();
         } else {
             callback(new Error('请输入正确的手机号/邮箱！'));
@@ -42,7 +42,7 @@
             return callback(new Error('密码不能为空！'))
         }
         const reg=/^[\w_-]{6,16}$/
-        if(reg.test(value)){
+        if(!reg.test(value)){
             callback();
         } else {
             callback(new Error('密码只能是6到16位的字母或下划线！'));
@@ -53,10 +53,28 @@
 			name:'signUp',
 			components:{},
 			setup(){
-				const formRef=ref(null);
+				const axios = inject("$axios");
+				let formRef=ref(null);
+				let ruleForms=reactive({telephone:'',password:''});
+				
+				function validUser(){
+						axios({
+                url:'Api/user/check',
+                method:'post',
+                data:{
+                    "userName":ruleForms.telephone,
+                }
+            }).then((res)=>{
+                alert("登录成功！")
+								console.log(res);
+            }).catch((e)=>{
+                console.error(e)
+                alert("登录失败！")
+            })
+					}
 				return {
 					formRef,
-					ruleForms:reactive({telephone:'',password:''}),
+					ruleForms,
 					rules:{
 						telephone:[{required:true,trigger:'change',validator:validTelephone}],
 						password:[{required:true,trigger:'change',validator:validPwd}]
@@ -65,12 +83,13 @@
 						formRef.value.validate(valid=>{
 							if(valid){
 								// 提交后台验证密码正确性
-								alert("登录成功！")
+								validUser();
 							} else {
 								// 验证失败
 							}
 						})
 					}
+
 				}
 			}
 		}

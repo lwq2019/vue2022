@@ -36,10 +36,10 @@ a:focus {
 a:hover {
   text-decoration: none;
   color: #6a7dfe;
-  color: -webkit-linear-gradient(left, #21d4fd, #b721ff);
-  color: -o-linear-gradient(left, #21d4fd, #b721ff);
-  color: -moz-linear-gradient(left, #21d4fd, #b721ff);
-  color: linear-gradient(left, #21d4fd, #b721ff);
+  color: -webkit-linear-gradient(to left, #21d4fd, #b721ff);
+  color: -o-linear-gradient(to left, #21d4fd, #b721ff);
+  color: -moz-linear-gradient(to left, #21d4fd, #b721ff);
+  color: linear-gradient(to left, #21d4fd, #b721ff);
 }
 
 /*---------------------------------------------*/
